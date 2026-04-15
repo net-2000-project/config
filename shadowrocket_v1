@@ -1,0 +1,27 @@
+[General]
+bypass-system = true
+skip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local, captive.apple.com
+# Убираем system из общего списка, оставляем чистые DNS
+dns-server = 1.1.1.1, 8.8.8.8, 77.88.8.8
+# Включаем принудительное использование прокси для DNS зарубежных сайтов
+dns-direct-system = false
+
+[Rule]
+# 1. Сначала жестко прописываем DNS для России через DIRECT
+# Это заставит Shadowrocket спрашивать про эти домены у локального провайдера
+DOMAIN-SUFFIX,ru,DIRECT
+DOMAIN-SUFFIX,su,DIRECT
+DOMAIN-SUFFIX,xn--p1ai,DIRECT
+
+# 2. Торренты
+PROTOCOL,BITTORRENT,REJECT
+
+# 3. Списки исключений (Apple, MS)
+DOMAIN-SET,https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/apple-cn.txt,DIRECT
+DOMAIN-SET,https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/microsoft.txt,DIRECT
+
+# 4. IP-правила
+GEOIP,RU,DIRECT
+
+# 5. Всё остальное в прокси
+FINAL,Proxy
