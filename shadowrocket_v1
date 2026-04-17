@@ -1,27 +1,49 @@
 [General]
 bypass-system = true
 skip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local, captive.apple.com
-# Убираем system из общего списка, оставляем чистые DNS
-dns-server = 1.1.1.1, 8.8.8.8, 77.88.8.8
-# Включаем принудительное использование прокси для DNS зарубежных сайтов
+# Отключаем IPv6, чтобы не было утечек на LTE
+ipv6 = false
+
+# Используем шифрованный DNS (DoH), который РКН не может подменить
+dns-server = https://1.1.1.1/dns-query, https://8.8.8.8/resolve
 dns-direct-system = false
+# Заставляем резолвить домены на стороне сервера
+dns-fallback-system = false
 
 [Rule]
-# 1. Сначала жестко прописываем DNS для России через DIRECT
-# Это заставит Shadowrocket спрашивать про эти домены у локального провайдера
-DOMAIN-SUFFIX,ru,DIRECT
-DOMAIN-SUFFIX,su,DIRECT
-DOMAIN-SUFFIX,xn--p1ai,DIRECT
+# 1. Локалка
+IP-CIDR,192.168.0.0/16,DIRECT
+IP-CIDR,10.0.0.0/8,DIRECT
+IP-CIDR,172.16.0.0/12,DIRECT
 
 # 2. Торренты
-PROTOCOL,BITTORRENT,REJECT
+PORT,6881-6889,REJECT
+DOMAIN-KEYWORD,torrent,REJECT
 
-# 3. Списки исключений (Apple, MS)
-DOMAIN-SET,https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/apple-cn.txt,DIRECT
-DOMAIN-SET,https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/microsoft.txt,DIRECT
+# 3. Российские зоны (Медуза .io сюда не попадет - это гуд)
+DOMAIN-SUFFIX,ru,DIRECT
+DOMAIN-SUFFIX,su,DIRECT
+DOMAIN-SUFFIX,рф,DIRECT
 
-# 4. IP-правила
+# 4. Исключаем Apple из DIRECT (если твой SNI связан с Apple)
+# Оставляем только тяжелый контент, который точно не забанят
+DOMAIN,updates.cdn-apple.com,DIRECT
+DOMAIN,swcdn.apple.com,DIRECT
+
+# 5. Списки РФ сервисов
+DOMAIN-SUFFIX,yandex.net,DIRECT
+DOMAIN-SUFFIX,yandex.ru,DIRECT
+DOMAIN-SUFFIX,vk.com,DIRECT
+DOMAIN-SUFFIX,tbank.ru,DIRECT
+DOMAIN-SUFFIX,sberbank.ru,DIRECT
+DOMAIN-SUFFIX,gosuslugi.ru,DIRECT
+
+# 6. Фикс для Медузы и заблокированных ресурсов
+# Если DNS все же травится, принудительно шлем их в PROXY
+DOMAIN-KEYWORD,meduza,PROXY
+DOMAIN-KEYWORD,instagram,PROXY
+DOMAIN-KEYWORD,facebook,PROXY
+
+# 7. Финальный аккорд
 GEOIP,RU,DIRECT
-
-# 5. Всё остальное в прокси
-FINAL,Proxy
+FINAL,PROXY
