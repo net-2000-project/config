@@ -1,0 +1,92 @@
+# NET-2000: Universal Clash/Shadowrocket Configuration
+# Для iOS (Shadowrocket), Android (Clash Meta), Windows/Mac
+
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: rule
+log-level: infoф
+ipv6: false
+
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  enhanced-mode: fake-ip
+  nameserver:
+    - 1.1.1.1
+    - 8.8.8.8
+    - https://dns.cloudflare.com/dns-query
+
+proxies:
+  # Основной вход (TCP/Reality)
+  - name: "NET-2000 [Main Apple]"
+    type: vless
+    server: net-2000.duckdns.org
+    port: 443
+    uuid: "{{UUID}}"
+    udp: true
+    tls: true
+    servername: www.icloud.com
+    network: tcp
+    reality-opts:
+      public-key: "lfQ7rbfRZn7-yZkmSI97FEa2tUGRUyzPHTlSBzvWAVM"
+      short-id: "1a2b3c4d"
+    client-fingerprint: chrome
+
+  # Обход DPI (gRPC/Reality) - МТС/LTE
+  - name: "NET-2000 [gRPC Google]"
+    type: vless
+    server: net-2000.duckdns.org
+    port: 2053
+    uuid: "{{UUID}}"
+    udp: true
+    tls: true
+    servername: dl.google.com
+    network: grpc
+    grpc-opts:
+      grpc-service-name: "google-update-grpc"
+    reality-opts:
+      public-key: "lfQ7rbfRZn7-yZkmSI97FEa2tUGRUyzPHTlSBzvWAVM"
+      short-id: "bcda1234"
+    client-fingerprint: chrome
+
+  # Резидентная нода (Венгрия)
+  - name: "NET-2000 [Air Hungary]"
+    type: vless
+    server: net-2000.duckdns.org
+    port: 8443
+    uuid: "{{UUID}}"
+    udp: true
+    tls: true
+    servername: dl.google.com
+    network: tcp
+    reality-opts:
+      public-key: "lfQ7rbfRZn7-yZkmSI97FEa2tUGRUyzPHTlSBzvWAVM"
+      short-id: "bcda1234"
+    client-fingerprint: chrome
+
+proxy-groups:
+  - name: "🚀 PROXY"
+    type: select
+    proxies:
+      - "NET-2000 [Main Apple]"
+      - "NET-2000 [gRPC Google]"
+      - "NET-2000 [Air Hungary]"
+      - DIRECT
+
+rules:
+  # Блокировка торрентов
+  - PORT-RANGE,6881-6889,REJECT
+  - DOMAIN-KEYWORD,torrent,REJECT
+  
+  # Прямой доступ к российским ресурсам (Direct)
+  - DOMAIN-SUFFIX,ru,DIRECT
+  - DOMAIN-SUFFIX,su,DIRECT
+  - DOMAIN-SUFFIX,рф,DIRECT
+  - GEOIP,RU,DIRECT
+  
+  # Локальная сеть
+  - GEOIP,LAN,DIRECT
+  
+  # Все остальное - через VPN
+  - MATCH,🚀 PROXY
