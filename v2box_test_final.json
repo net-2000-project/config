@@ -1,18 +1,22 @@
 {
   "outbounds": [
     {
-      "tag": "NET-2000 [Main Apple]",
+      "tag": "VLESS_APPLE (TCP)",
       "protocol": "vless",
       "settings": {
-        "vnext": [{
-          "address": "net-2000.duckdns.org",
-          "port": 443,
-          "users": [{
-            "id": "550e8400-e29b-41d4-a716-446655440000",
-            "encryption": "none",
-            "flow": "xtls-rprx-vision"
-          }]
-        }]
+        "vnext": [
+          {
+            "address": "138.124.108.154",
+            "port": 443,
+            "users": [
+              {
+                "id": "836f62cb-0d64-4931-bc2b-45bed1f9f341",
+                "encryption": "none",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
+          }
+        ]
       },
       "streamSettings": {
         "network": "tcp",
@@ -20,7 +24,7 @@
         "realitySettings": {
           "show": false,
           "fingerprint": "chrome",
-          "serverName": "www.icloud.com",
+          "serverName": "gateway.icloud.com",
           "publicKey": "lfQ7rbfRZn7-yZkmSI97FEa2tUGRUyzPHTlSBzvWAVM",
           "shortId": "1a2b3c4d",
           "spiderX": "/"
@@ -28,23 +32,28 @@
       }
     },
     {
-      "tag": "NET-2000 [gRPC Google]",
+      "tag": "GRPC_GOOGLE (gRPC)",
       "protocol": "vless",
       "settings": {
-        "vnext": [{
-          "address": "net-2000.duckdns.org",
-          "port": 2053,
-          "users": [{
-            "id": "550e8400-e29b-41d4-a716-446655440000",
-            "encryption": "none"
-          }]
-        }]
+        "vnext": [
+          {
+            "address": "138.124.108.154",
+            "port": 2053,
+            "users": [
+              {
+                "id": "836f62cb-0d64-4931-bc2b-45bed1f9f341",
+                "encryption": "none"
+              }
+            ]
+          }
+        ]
       },
       "streamSettings": {
         "network": "grpc",
         "security": "reality",
         "grpcSettings": {
-          "serviceName": "google-update-grpc"
+          "serviceName": "google-update-grpc",
+          "multiMode": true
         },
         "realitySettings": {
           "show": false,
@@ -57,34 +66,9 @@
       }
     },
     {
-      "tag": "NET-2000 [Air Hungary]",
-      "protocol": "vless",
-      "settings": {
-        "vnext": [{
-          "address": "net-2000.duckdns.org",
-          "port": 8443,
-          "users": [{
-            "id": "550e8400-e29b-41d4-a716-446655440000",
-            "encryption": "none"
-          }]
-        }]
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "reality",
-        "realitySettings": {
-          "show": false,
-          "fingerprint": "chrome",
-          "serverName": "dl.google.com",
-          "publicKey": "lfQ7rbfRZn7-yZkmSI97FEa2tUGRUyzPHTlSBzvWAVM",
-          "shortId": "bcda1234",
-          "spiderX": "/"
-        }
-      }
-    },
-    {
-      "tag": "DIRECT",
-      "protocol": "freedom"
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {}
     }
   ],
   "routing": {
@@ -92,11 +76,21 @@
     "rules": [
       {
         "type": "field",
-        "outboundTag": "DIRECT",
+        "outboundTag": "direct",
         "domain": [
           "suffix:ru",
           "suffix:su",
-          "suffix:рф"
+          "suffix:рф",
+          "yandex.ru",
+          "vk.com"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "ip": [
+          "geoip:ru",
+          "geoip:private"
         ]
       }
     ]
