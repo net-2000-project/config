@@ -1,44 +1,13 @@
 {
   "outbounds": [
     {
-      "tag": "VLESS_APPLE (TCP)",
+      "tag": "PROXY-1",
       "protocol": "vless",
       "settings": {
         "vnext": [
           {
             "address": "138.124.108.154",
             "port": 443,
-            "users": [
-              {
-                "id": "836f62cb-0d64-4931-bc2b-45bed1f9f341",
-                "encryption": "none",
-                "flow": "xtls-rprx-vision"
-              }
-            ]
-          }
-        ]
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "reality",
-        "realitySettings": {
-          "show": false,
-          "fingerprint": "chrome",
-          "serverName": "gateway.icloud.com",
-          "publicKey": "lfQ7rbfRZn7-yZkmSI97FEa2tUGRUyzPHTlSBzvWAVM",
-          "shortId": "1a2b3c4d",
-          "spiderX": "/"
-        }
-      }
-    },
-    {
-      "tag": "GRPC_GOOGLE (gRPC)",
-      "protocol": "vless",
-      "settings": {
-        "vnext": [
-          {
-            "address": "138.124.108.154",
-            "port": 2053,
             "users": [
               {
                 "id": "836f62cb-0d64-4931-bc2b-45bed1f9f341",
@@ -49,49 +18,28 @@
         ]
       },
       "streamSettings": {
-        "network": "grpc",
+        "network": "tcp",
         "security": "reality",
-        "grpcSettings": {
-          "serviceName": "google-update-grpc",
-          "multiMode": true
-        },
         "realitySettings": {
-          "show": false,
-          "fingerprint": "chrome",
-          "serverName": "dl.google.com",
+          "serverName": "gateway.icloud.com",
           "publicKey": "lfQ7rbfRZn7-yZkmSI97FEa2tUGRUyzPHTlSBzvWAVM",
-          "shortId": "bcda1234",
+          "shortId": "1a2b3c4d",
           "spiderX": "/"
         }
       }
     },
     {
       "tag": "direct",
-      "protocol": "freedom",
-      "settings": {}
+      "protocol": "freedom"
     }
   ],
   "routing": {
-    "domainStrategy": "IPIfNonMatch",
+    "domainStrategy": "AsIs",
     "rules": [
       {
         "type": "field",
         "outboundTag": "direct",
-        "domain": [
-          "suffix:ru",
-          "suffix:su",
-          "suffix:рф",
-          "yandex.ru",
-          "vk.com"
-        ]
-      },
-      {
-        "type": "field",
-        "outboundTag": "direct",
-        "ip": [
-          "geoip:ru",
-          "geoip:private"
-        ]
+        "domain": ["suffix:ru"]
       }
     ]
   }
