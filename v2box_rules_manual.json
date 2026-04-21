@@ -1,0 +1,21 @@
+[
+  {
+    "name": "NET-2000 Ads",
+    "type": "Domain",
+    "tag": "block",
+    "matchMode": "full",
+    "isEnable": true,
+    "remark": "Adblock",
+    "list": ["geosite:category-ads-all"]
+  },
+  {
+    "name": "NET-2000 RU",
+    "type": "Domain",
+    "tag": "direct",
+    "matchMode": "full",
+    "isEnable": true,
+    "remark": "RU Sites",
+    "list": ["suffix:ru", "suffix:su"],
+    "listIP": ["geoip:ru"]
+  }
+]
