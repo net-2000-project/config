@@ -1,0 +1,104 @@
+{
+  "outbounds": [
+    {
+      "tag": "NET-2000 [Main Apple]",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [{
+          "address": "net-2000.duckdns.org",
+          "port": 443,
+          "users": [{
+            "id": "550e8400-e29b-41d4-a716-446655440000",
+            "encryption": "none",
+            "flow": "xtls-rprx-vision"
+          }]
+        }]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "fingerprint": "chrome",
+          "serverName": "www.icloud.com",
+          "publicKey": "lfQ7rbfRZn7-yZkmSI97FEa2tUGRUyzPHTlSBzvWAVM",
+          "shortId": "1a2b3c4d",
+          "spiderX": "/"
+        }
+      }
+    },
+    {
+      "tag": "NET-2000 [gRPC Google]",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [{
+          "address": "net-2000.duckdns.org",
+          "port": 2053,
+          "users": [{
+            "id": "550e8400-e29b-41d4-a716-446655440000",
+            "encryption": "none"
+          }]
+        }]
+      },
+      "streamSettings": {
+        "network": "grpc",
+        "security": "reality",
+        "grpcSettings": {
+          "serviceName": "google-update-grpc"
+        },
+        "realitySettings": {
+          "show": false,
+          "fingerprint": "chrome",
+          "serverName": "dl.google.com",
+          "publicKey": "lfQ7rbfRZn7-yZkmSI97FEa2tUGRUyzPHTlSBzvWAVM",
+          "shortId": "bcda1234",
+          "spiderX": "/"
+        }
+      }
+    },
+    {
+      "tag": "NET-2000 [Air Hungary]",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [{
+          "address": "net-2000.duckdns.org",
+          "port": 8443,
+          "users": [{
+            "id": "550e8400-e29b-41d4-a716-446655440000",
+            "encryption": "none"
+          }]
+        }]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "fingerprint": "chrome",
+          "serverName": "dl.google.com",
+          "publicKey": "lfQ7rbfRZn7-yZkmSI97FEa2tUGRUyzPHTlSBzvWAVM",
+          "shortId": "bcda1234",
+          "spiderX": "/"
+        }
+      }
+    },
+    {
+      "tag": "DIRECT",
+      "protocol": "freedom"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "outboundTag": "DIRECT",
+        "domain": [
+          "suffix:ru",
+          "suffix:su",
+          "suffix:рф"
+        ]
+      }
+    ]
+  }
+}
